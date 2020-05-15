@@ -29,6 +29,12 @@ if [ ! -r "$FILE" ]; then
 fi
 
 MIME=$(file --dereference --mime "$FILE")
+
+if [[ "$MIME" =~ image ]] && [ -z "$FZF_PREVIEW_COMMAND" ] && command -v viu > /dev/null; then
+  viu -1 "$FILE"
+  exit $?
+fi
+
 if [[ "$MIME" =~ binary ]]; then
   echo "$MIME"
   exit 0
